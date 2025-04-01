@@ -1,7 +1,0 @@
-apiVersion: v2
-name: my-chart
-version: 0.1.0
-appVersion: "1.16.0"
-description: Um Helm Chart para implantar meu aplicativo
-sources:
-  - https://dyego-barros.github.io/my-chart/my-chart-0.1.0.tgz  # O URL do chart no GitHub Pages
