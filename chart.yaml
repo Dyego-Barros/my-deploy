@@ -1,13 +1,7 @@
 apiVersion: v2
 name: meu-app
-description: Um Helm Chart para implantar meu aplicativo
-type: application
 version: 0.1.0
 appVersion: "1.16.0"
-home: https://dyego-barros.github.io/my-chart/my-chart-0.1.0.tgz
+description: Um Helm Chart para implantar meu aplicativo
 sources:
-  - https://dyego-barros.github.io/my-chart/my-chart-0.1.0.tgz
-maintainers:
-  - name: Dyego Barros
-    email: gabutdd@gmail.com
-
+  - https://dyego-barros.github.io/my-chart/my-chart-0.1.0.tgz  # O URL do chart no GitHub Pages
