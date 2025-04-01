@@ -4,9 +4,9 @@ description: Um Helm Chart para implantar meu aplicativo
 type: application
 version: 0.1.0
 appVersion: "1.0.0"
-home: https://dyego-barros.github.io/my-chart/
+home: https://github.com/Dyego-Barros/my-chart
 sources:
-  - https://dyego-barros.github.io/my-chart/
+  - https://github.com/Dyego-Barros/my-chart
 maintainers:
   - name: Dyego Barros
     email: gabutdd@gmail.com
