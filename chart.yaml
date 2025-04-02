@@ -1,8 +1,7 @@
 apiVersion: v2
-appVersion: 1.16.0
-description: A Helm chart for Kubernetes
-name: my-chart
-type: application
+name: meu-app
 version: 0.1.0
-annotations:
-  repository: https://dyego-barros.github.io/my-chart/my-chart-0.1.0.tgz
+dependencies:
+  - name: my-chart
+    version: 0.1.0
+    repository: http://132.145.54.158:8080
