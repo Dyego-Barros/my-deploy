@@ -5,4 +5,4 @@ name: my-chart
 type: application
 version: 0.1.0
 annotations:
-  repository: " https://dyego-barros.github.io/my-chart/my-chart-0.1.0.tgz"
+  repository: https://dyego-barros.github.io/my-chart/my-chart-0.1.0.tgz
