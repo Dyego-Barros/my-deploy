@@ -4,4 +4,4 @@ version: 0.1.0
 dependencies:
   - name: my-chart
     version: 0.1.0
-    repository: https://github.com/Dyego-Barros/my-chart
+    repository: http://chart.dmgsoftware.com.br/
