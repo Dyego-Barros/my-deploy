@@ -32,8 +32,8 @@ grafana:
   
   persistence:
     enabled: true
-    storageClassName: "local-storage"
-    size: 5Gi
+    storageClassName: "local-storage"  # Nome da Storage Class, ajuste se necessário
+    size: 2Gi  # Volume persistente de 2Gi para o Grafana
     accessModes:
       - ReadWriteOnce
   
@@ -56,15 +56,43 @@ prometheus:
     tag: "v2.33.1"  # Versão que você deseja
     pullPolicy: IfNotPresent
 
+  # Serviço do Prometheus
+  service:
+    enabled: true
+    type: ClusterIP
+    port: 9090
+    targetPort: 9090
+    name: prometheus-operated  # Nome do serviço do Prometheus
+
   # Configuração do ServiceMonitor (caso você tenha Prometheus Operator)
   serviceMonitor:
     enabled: true
+    namespace: monitoring  # Garantir que o ServiceMonitor seja criado no mesmo namespace
     additionalLabels:
       release: prometheus
     selector:
       matchLabels:
         app: prometheus
-    
+
+  # Ingress para Prometheus
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - host: prometheus.meuteste.com  # Altere o host conforme necessário
+        paths:
+          - path: /
+            pathType: Prefix
+ 
+  # Persistência do Prometheus
+  persistence:
+    enabled: true
+    storageClassName: "local-storage"  # Nome da Storage Class, ajuste se necessário
+    size: 20Gi  # Volume persistente de 20Gi para o Prometheus
+    accessModes:
+      - ReadWriteOnce
 
 # Node Exporter e Kube State Metrics
 monitoring:
@@ -73,12 +101,14 @@ monitoring:
     podSelector:
       matchLabels:
         app: kube-state-metrics
+    namespace: monitoring  # Garantir que o kube-state-metrics seja implantado no namespace correto
 
   nodeExporter:
     enabled: true
     podSelector:
       matchLabels:
         app: node-exporter
+    namespace: monitoring  # Garantir que o node-exporter seja implantado no namespace correto
 
 nodeSelector: {}
 
