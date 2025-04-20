@@ -5,9 +5,4 @@ dependencies:
   - name: my-chart
     version: 0.1.0
     repository: http://chart.dmgsoftware.com.br/
-  - name: prometheus
-    version: 25.21.0
-    repository: https://prometheus-community.github.io/helm-charts
-  - name: grafana
-    version: 7.3.9
-    repository: https://grafana.github.io/helm-charts
+ 
