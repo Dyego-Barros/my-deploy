@@ -62,6 +62,7 @@ prometheus:
     selector:
       matchLabels:
         app: prometheus
+    
 
 # Node Exporter e Kube State Metrics
 monitoring:
