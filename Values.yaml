@@ -38,9 +38,47 @@ persistence:
 adminUser: "admin"
 adminPassword: "admin"
 
+# Adicionando o Prometheus DataSource ao Grafana
+datasources:
+  defaultDatasourceEnabled: true
+  prometheus:
+    url: "http://prometheus-operated:9090"  # URL do Prometheus no cluster
+    access: proxy
+    isDefault: true
+
+# Configuração da imagem do Prometheus
+prometheus:
+  enabled: true
+  image:
+    repository: "prometheus/prometheus"  # Repositório da imagem do Prometheus
+    tag: "v2.33.1"  # Versão que você deseja
+    pullPolicy: IfNotPresent
+
+  # Configuração do ServiceMonitor (caso você tenha Prometheus Operator)
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: prometheus
+    selector:
+      matchLabels:
+        app: prometheus
+
+# Node Exporter e Kube State Metrics
+monitoring:
+  kubeStateMetrics:
+    enabled: true
+    podSelector:
+      matchLabels:
+        app: kube-state-metrics
+
+  nodeExporter:
+    enabled: true
+    podSelector:
+      matchLabels:
+        app: node-exporter
+
 nodeSelector: {}
 
 tolerations: []
 
 affinity: {}
-
