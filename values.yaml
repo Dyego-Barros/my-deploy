@@ -1,95 +1,117 @@
-# Grafana
-grafana: 
-  image:
-    repository: grafana/grafana
-    tag: latest
-    pullPolicy: IfNotPresent
-  
-  service:
-    type: ClusterIP
-    port: 3000
-  
-  ingress:
-    enabled: true
-    className: "nginx"
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-    hosts:
-      - host: grafana.meuteste.com
-        paths:
-          - path: /
-            pathType: Prefix
-  
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 250m
-      memory: 256Mi
-  
-  persistence:
-    enabled: true
-    storageClassName: "local-storage"  # Nome da Storage Class, ajuste se necessário
-    size: 2Gi  # Volume persistente de 2Gi para o Grafana
-    accessModes:
-      - ReadWriteOnce
-  
-  adminUser: "admin"
-  adminPassword: "admin"
-  
-  # Adicionando o Prometheus DataSource ao Grafana
-  datasources:
-    defaultDatasourceEnabled: true
-    prometheus:
-      url: "http://prometheus-operated:9090"  # URL do Prometheus no cluster
-      access: proxy
-      isDefault: true
+# Containers (Agora você pode adicionar Grafana, Prometheus e outros containers)
+containers:
+  - name: grafana
+    image:
+      repository: grafana/grafana
+      tag: latest
+      pullPolicy: IfNotPresent
+    service:
+      type: ClusterIP
+      port: 3000
+    ingress:
+      enabled: true
+      className: "nginx"
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+      hosts:
+        - host: grafana.meuteste.com
+          paths:
+            - path: /
+              pathType: Prefix
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+    persistence:
+      enabled: true
+      storageClassName: "local-storage"  # Nome da Storage Class, ajuste se necessário
+      size: 2Gi  # Volume persistente de 2Gi para o Grafana
+      accessModes:
+        - ReadWriteOnce
+    adminUser: "admin"
+    adminPassword: "admin"
+    datasources:
+      defaultDatasourceEnabled: true
+      prometheus:
+        url: "http://prometheus-operated:9090"  # URL do Prometheus no cluster
+        access: proxy
+        isDefault: true
 
-# Prometheus
-prometheus: 
-  image:
-    repository: "prometheus/prometheus"  # Repositório da imagem do Prometheus
-    tag: "v2.33.1"  # Versão que você deseja
-    pullPolicy: IfNotPresent
+  - name: prometheus
+    image:
+      repository: "prometheus/prometheus"  # Repositório da imagem do Prometheus
+      tag: "v2.33.1"  # Versão que você deseja
+      pullPolicy: IfNotPresent
+    service:
+      enabled: true
+      type: ClusterIP
+      port: 9090
+      targetPort: 9090
+      name: prometheus-operated  # Nome do serviço do Prometheus
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring  # Garantir que o ServiceMonitor seja criado no mesmo namespace
+      additionalLabels:
+        release: prometheus
+      selector:
+        matchLabels:
+          app: prometheus
+    ingress:
+      enabled: true
+      className: "nginx"
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+      hosts:
+        - host: prometheus.meuteste.com  # Altere o host conforme necessário
+          paths:
+            - path: /
+              pathType: Prefix
+    persistence:
+      enabled: true
+      storageClassName: "local-storage"  # Nome da Storage Class, ajuste se necessário
+      size: 20Gi  # Volume persistente de 20Gi para o Prometheus
+      accessModes:
+        - ReadWriteOnce
 
-  # Serviço do Prometheus
-  service:
-    enabled: true
-    type: ClusterIP
-    port: 9090
-    targetPort: 9090
-    name: prometheus-operated  # Nome do serviço do Prometheus
+  # Se quiser adicionar mais containers, basta adicionar aqui
+  - name: kube-state-metrics
+    image:
+      repository: quay.io/coreos/kube-state-metrics
+      tag: v2.5.0
+      pullPolicy: IfNotPresent
+    service:
+      enabled: true
+      type: ClusterIP
+      port: 8080
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
+    namespace: monitoring
 
-  # Configuração do ServiceMonitor (caso você tenha Prometheus Operator)
-  serviceMonitor:
-    enabled: true
-    namespace: monitoring  # Garantir que o ServiceMonitor seja criado no mesmo namespace
-    additionalLabels:
-      release: prometheus
-    selector:
-      matchLabels:
-        app: prometheus
-
-  # Ingress para Prometheus
-  ingress:
-    enabled: true
-    className: "nginx"
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-    hosts:
-      - host: prometheus.meuteste.com  # Altere o host conforme necessário
-        paths:
-          - path: /
-            pathType: Prefix
- 
-  # Persistência do Prometheus
-  persistence:
-    enabled: true
-    storageClassName: "local-storage"  # Nome da Storage Class, ajuste se necessário
-    size: 20Gi  # Volume persistente de 20Gi para o Prometheus
-    accessModes:
-      - ReadWriteOnce
+  - name: node-exporter
+    image:
+      repository: prom/node-exporter
+      tag: v1.3.1
+      pullPolicy: IfNotPresent
+    service:
+      enabled: true
+      type: ClusterIP
+      port: 9100
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
+    namespace: monitoring
 
 # Node Exporter e Kube State Metrics
 monitoring:
