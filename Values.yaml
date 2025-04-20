@@ -1,50 +1,50 @@
-replicaCount: 1
-
-image:
-  repository: grafana/grafana
-  tag: latest
-  pullPolicy: IfNotPresent
-
-service:
-  type: ClusterIP
-  port: 3000
-
-ingress:
+grafana:
   enabled: true
-  className: "nginx"
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-  hosts:
-    - host: grafana.meuteste.com
-      paths:
-        - path: /
-          pathType: Prefix
-
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 250m
-    memory: 256Mi
-
-persistence:
-  enabled: true
-  storageClassName: "local-storage"
-  size: 5Gi
-  accessModes:
-    - ReadWriteOnce
-
-adminUser: "admin"
-adminPassword: "admin"
-
-# Adicionando o Prometheus DataSource ao Grafana
-datasources:
-  defaultDatasourceEnabled: true
-  prometheus:
-    url: "http://prometheus-operated:9090"  # URL do Prometheus no cluster
-    access: proxy
-    isDefault: true
+  image:
+    repository: grafana/grafana
+    tag: latest
+    pullPolicy: IfNotPresent
+  
+  service:
+    type: ClusterIP
+    port: 3000
+  
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - host: grafana.meuteste.com
+        paths:
+          - path: /
+            pathType: Prefix
+  
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  
+  persistence:
+    enabled: true
+    storageClassName: "local-storage"
+    size: 5Gi
+    accessModes:
+      - ReadWriteOnce
+  
+  adminUser: "admin"
+  adminPassword: "admin"
+  
+  # Adicionando o Prometheus DataSource ao Grafana
+  datasources:
+    defaultDatasourceEnabled: true
+    prometheus:
+      url: "http://prometheus-operated:9090"  # URL do Prometheus no cluster
+      access: proxy
+      isDefault: true
 
 # Configuração da imagem do Prometheus
 prometheus:
