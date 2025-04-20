@@ -29,7 +29,11 @@ resources:
     memory: 256Mi
 
 persistence:
-  enabled: false
+  enabled: true
+  storageClassName: "local-storage"
+  size: 5Gi
+  accessModes:
+    - ReadWriteOnce
 
 adminUser: "admin"
 adminPassword: "admin"
