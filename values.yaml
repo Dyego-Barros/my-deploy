@@ -1,8 +1,5 @@
-
-namespace: monitoring
-
-grafana:
-  enabled: true
+# Grafana
+grafana: 
   image:
     repository: grafana/grafana
     tag: latest
@@ -49,9 +46,8 @@ grafana:
       access: proxy
       isDefault: true
 
-# Configuração da imagem do Prometheus
-prometheus:
-  enabled: true
+# Prometheus
+prometheus: 
   image:
     repository: "prometheus/prometheus"  # Repositório da imagem do Prometheus
     tag: "v2.33.1"  # Versão que você deseja
