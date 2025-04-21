@@ -1,4 +1,3 @@
-
 grafana:
   enabled: true
   replicaCount: 1
@@ -50,13 +49,13 @@ prometheus:
     enabled: false  # Desabilita a criação do PVC
     # As opções abaixo são ignoradas quando o PVC está desabilitado
     name: prometheus-pvc
-      accessModes:
-        - ReadWriteOnce
-      storage: 5Gi
-      storageClassName: local-storage
-    service:
-      port: 9090
-      type: ClusterIP
-    # Remover volumes e volumeMounts quando o PVC estiver desabilitado
-    volumeMounts: []
-    volumes: []
+    accessModes:
+      - ReadWriteOnce
+    storage: 5Gi
+    storageClassName: local-storage
+  service:
+    port: 9090
+    type: ClusterIP
+  # Remover volumes e volumeMounts quando o PVC estiver desabilitado
+  volumeMounts: []
+  volumes: []
