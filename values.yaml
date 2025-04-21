@@ -1,6 +1,6 @@
 my-chart:
   grafana:
-    enabled: true
+    #enabled: true
     image:
       repository: grafana/grafana
       tag: latest
