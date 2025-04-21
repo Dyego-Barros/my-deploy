@@ -1,4 +1,4 @@
-ny-chart:
+neu-app:
   replicaCount: 1
   image:
     repository: prom/prometheus
