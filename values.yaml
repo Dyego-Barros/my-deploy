@@ -14,20 +14,7 @@ grafana:
         paths:
           - path: /
             pathType: Prefix
-  persistentVolumeClaim:
-    enabled: false  # Desabilita a criação do PVC
-    # As opções abaixo são ignoradas quando o PVC está desabilitado
-    name: grafana-pvc
-    accessModes:
-      - ReadWriteOnce
-    storage: 2Gi
-    storageClassName: local-storage
-  service:
-    port: 3000
-    type: ClusterIP
-  # Remover volumes e volumeMounts quando o PVC estiver desabilitado
-  volumeMounts: []
-  volumes: []
+ 
 
 prometheus:
   enabled: true
@@ -45,17 +32,8 @@ prometheus:
         paths:
           - path: /
             pathType: Prefix
-  persistentVolumeClaim:
-    enabled: false  # Desabilita a criação do PVC
-    # As opções abaixo são ignoradas quando o PVC está desabilitado
-    name: prometheus-pvc
-    accessModes:
-      - ReadWriteOnce
-    storage: 5Gi
-    storageClassName: local-storage
+ 
   service:
     port: 9090
     type: ClusterIP
   # Remover volumes e volumeMounts quando o PVC estiver desabilitado
-  volumeMounts: []
-  volumes: []
