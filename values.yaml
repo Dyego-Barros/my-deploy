@@ -1,5 +1,6 @@
 chart-default:
     grafana:
+      enabled: true
       replicaCount: 1
       image:
         repository: grafana/grafana
@@ -15,7 +16,7 @@ chart-default:
               - path: /
                 pathType: Prefix
       persistentVolumeClaim:
-        enabled: true
+        enabled: false
         name: grafana-pvc
         accessModes:
           - ReadWriteOnce
@@ -33,6 +34,7 @@ chart-default:
             claimName: grafana-pvc
     
     prometheus:
+      enabled: true
       replicaCount: 1
       image:
         repository: prom/prometheus
@@ -48,7 +50,7 @@ chart-default:
               - path: /
                 pathType: Prefix
       persistentVolumeClaim:
-        enabled: true
+        enabled: false
         name: prometheus-pvc
         accessModes:
           - ReadWriteOnce
