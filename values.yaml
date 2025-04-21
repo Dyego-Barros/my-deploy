@@ -1,19 +1,18 @@
-my-chart:  
-    replicaCount: 1    
+chart-default:
+
+  grafana:
+    replicaCount: 1
     image:
-      repository: grafana/loki
-      tag: "1.4.0"
+      repository: grafana/grafana
+      tag: 10.2.3
       pullPolicy: IfNotPresent
-  
-    adminPassword: admin  # (ou use secret)
-  
+      
     service:
-      type: ClusterIP
       port: 3000
-  
+      type: ClusterIP
+      
     ingress:
       enabled: true
-      className: nginx
       annotations:
         nginx.ingress.kubernetes.io/rewrite-target: /
       hosts:
@@ -21,50 +20,67 @@ my-chart:
           paths:
             - path: /
               pathType: Prefix
-      tls: []
-  
-    persistence:
+              
+    volumeMounts:
+      - name: grafana-storage
+        mountPath: /var/lib/grafana
+        
+    volumes:
+      - name: grafana-storage
+        persistentVolumeClaim:
+          claimName: grafana-pvc
+          
+    persistentVolumeClaim:
       enabled: true
-      size: 5Gi
-      storageClassName: local-storage
+      name: grafana-pvc
       accessModes:
         - ReadWriteOnce
+      storage: 2Gi
+      storageClassName: local-storage
+
+  prometheus:
+    replicaCount: 1
+    image:
+      repository: prom/prometheus
+      tag: v2.50.0
+      pullPolicy: IfNotPresent
+      
+    service:
+      port: 9090
+      type: ClusterIP
+      
+    ingress:
+      enabled: true
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+      hosts:
+        - host: prometheus.meuteste.com
+          paths:
+            - path: /
+              pathType: Prefix
+              
+    volumeMounts:
+      - name: prometheus-storage
+        mountPath: /prometheus
         
-    prometheus:
-         replicaCount: 1
-         image:
-           repository: prom/prometheus
-           tag: "v2.33.1"
-           pullPolicy: IfNotPresent
-       
-         service:
-           type: ClusterIP
-           port: 9090
-       
-         ingress:
-           enabled: true
-           className: nginx  # ou conforme seu Ingress Controller
-           annotations:
-             nginx.ingress.kubernetes.io/rewrite-target: /
-           hosts:
-             - host: prometheus.meuteste.com
-               paths:
-                 - path: /
-                   pathType: Prefix
-           tls: []  # Adicione se usar TLS
-       
-         resources:
-           requests:
-             memory: "1Gi"
-             cpu: "50m"
-           limits:
-             memory: "2Gi"
-       
-         persistence:
-           enabled: true
-           size: 10Gi
-           storageClass: local-storage
-           accessModes:
-             - ReadWriteOnce
-        
- 
+    volumes:
+      - name: prometheus-storage
+        persistentVolumeClaim:
+          claimName: prometheus-pvc
+          
+    persistentVolumeClaim:
+      enabled: true
+      name: prometheus-pvc
+      accessModes:
+        - ReadWriteOnce
+      storage: 5Gi
+      storageClassName: local-storage
+      
+    extraScrapeConfigs:
+      - job_name: 'node-exporter'
+        static_configs:
+          - targets: ['node-exporter.default.svc.cluster.local:9100']
+          
+      - job_name: 'kube-state-metrics'
+        static_configs:
+          - targets: ['kube-state-metrics.default.svc.cluster.local:8080']
