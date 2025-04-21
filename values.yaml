@@ -1,40 +1,48 @@
-chart-default:
-  - name: grafana
+grafana:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: grafana/grafana
+    tag: 10.2.3
+    pullPolicy: IfNotPresent
+  ingress:
     enabled: true
-    replicaCount: 1
-    image:
-      repository: grafana/grafana
-      tag: 10.2.3
-      pullPolicy: IfNotPresent
-    ingress:
-      enabled: true
-      annotations:
-        nginx.ingress.kubernetes.io/rewrite-target: /
-      hosts:
-        - host: grafana.meuteste.com
-          paths:
-            - path: /
-              pathType: Prefix
-    service:
-      port: 3000
-      type: ClusterIP
-    volumeMounts:
-      - name: grafana-storage
-        mountPath: /var/lib/grafana
-    volumes:
-      - name: grafana-storage
-        persistentVolumeClaim:
-          claimName: grafana-pvc
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - host: grafana.meuteste.com
+        paths:
+          - path: /
+            pathType: Prefix
+  service:
+    port: 3000
+    type: ClusterIP
+  volumeMounts:
+    - name: grafana-storage
+      mountPath: /var/lib/grafana
+  volumes:
+    - name: grafana-storage
+      persistentVolumeClaim:
+        claimName: grafana-pvc
 
-  - name: python-api
+python-api:
+  enabled: true
+  replicaCount: 2
+  image:
+    repository: python:3.9
+    tag: latest
+    pullPolicy: IfNotPresent
+  ingress:
     enabled: true
-    replicaCount: 2
-    image:
-      repository: python:3.9
-      tag: latest
-      pullPolicy: IfNotPresent
-    service:
-      port: 5000
-      type: ClusterIP
-    volumeMounts: []
-    volumes: []
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - host: python-api.meuteste.com
+        paths:
+          - path: /
+            pathType: Prefix
+  service:
+    port: 5000
+    type: ClusterIP
+  volumeMounts: []
+  volumes: []
