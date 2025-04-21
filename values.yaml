@@ -1,19 +1,10 @@
-chart-default:
-  
+grafana:
+  enabled: true
   replicaCount: 1
-  image:
-    repository: grafana/grafana
-    tag: 10.2.3
-    pullPolicy: IfNotPresent
-  ingress:
-    enabled: true
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-    hosts:
-      - host: grafana.meuteste.com
-        paths:
-          - path: /
-            pathType: Prefix
+  image: grafana/grafana
+  tag: 10.2.3
+  imagePullPolicy: IfNotPresent
+  containerPort: 3000
   service:
     port: 3000
     type: ClusterIP
@@ -24,4 +15,30 @@ chart-default:
     - name: grafana-storage
       persistentVolumeClaim:
         claimName: grafana-pvc
+  ingress:
+    enabled: true
+    hosts:
+      - host: grafana.meuteste.com
+        paths:
+          - path: /
+            pathType: Prefix
 
+python-api:
+  enabled: true
+  replicaCount: 2
+  image: python:3.9
+  tag: latest
+  imagePullPolicy: IfNotPresent
+  containerPort: 5000
+  service:
+    port: 5000
+    type: ClusterIP
+  volumeMounts: []
+  volumes: []
+  ingress:
+    enabled: true
+    hosts:
+      - host: python-api.meuteste.com
+        paths:
+          - path: /
+            pathType: Prefix
