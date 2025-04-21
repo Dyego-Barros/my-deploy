@@ -1,18 +1,18 @@
-chart-default:    
-      replicaCount: 1
-      image:
-        repository: grafana/grafana
-        tag: 10.2.3
-        pullPolicy: IfNotPresent
-      ingress:
-        enabled: true
-        annotations:
-          nginx.ingress.kubernetes.io/rewrite-target: /
-        hosts:
-          - host: grafana.meuteste.com
-            paths:
-              - path: /
-                pathType: Prefix
-     
-    
+grafana:    
+  replicaCount: 1
+  image:
+    repository: grafana/grafana
+    tag: 10.2.3
+    pullPolicy: IfNotPresent
+  ingress:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - host: grafana.meuteste.com
+        paths:
+          - path: /
+            pathType: Prefix
+
+
    
