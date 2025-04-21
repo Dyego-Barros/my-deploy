@@ -1,8 +1,8 @@
 apiVersion: v2
-name: meu-app
+name: chart-default
 version: 1.16.0
 dependencies:
   - name: chart-default
     version: 0.1.0
-    repository: http://chart.dmgsoftware.com.br
+    repository: http://chart.dmgsoftware.com.br/
  
