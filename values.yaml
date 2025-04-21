@@ -1,65 +1,66 @@
-grafana:
-  replicaCount: 1
-  image:
-    repository: grafana/grafana
-    tag: 10.2.3
-    pullPolicy: IfNotPresent
-  ingress:
-    enabled: true
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-    hosts:
-      - host: grafana.meuteste.com
-        paths:
-          - path: /
-            pathType: Prefix
-  persistentVolumeClaim:
-    enabled: true
-    name: grafana-pvc
-    accessModes:
-      - ReadWriteOnce
-    storage: 2Gi
-    storageClassName: local-storage
-  service:
-    port: 3000
-    type: ClusterIP
-  volumeMounts:
-    - name: grafana-storage
-      mountPath: /var/lib/grafana
-  volumes:
-    - name: grafana-storage
+chart-default:
+    grafana:
+      replicaCount: 1
+      image:
+        repository: grafana/grafana
+        tag: 10.2.3
+        pullPolicy: IfNotPresent
+      ingress:
+        enabled: true
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /
+        hosts:
+          - host: grafana.meuteste.com
+            paths:
+              - path: /
+                pathType: Prefix
       persistentVolumeClaim:
-        claimName: grafana-pvc
-
-prometheus:
-  replicaCount: 1
-  image:
-    repository: prom/prometheus
-    tag: v2.50.0
-    pullPolicy: IfNotPresent
-  ingress:
-    enabled: true
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-    hosts:
-      - host: prometheus.meuteste.com
-        paths:
-          - path: /
-            pathType: Prefix
-  persistentVolumeClaim:
-    enabled: true
-    name: prometheus-pvc
-    accessModes:
-      - ReadWriteOnce
-    storage: 5Gi
-    storageClassName: local-storage
-  service:
-    port: 9090
-    type: ClusterIP
-  volumeMounts:
-    - name: prometheus-storage
-      mountPath: /prometheus
-  volumes:
-    - name: prometheus-storage
+        enabled: true
+        name: grafana-pvc
+        accessModes:
+          - ReadWriteOnce
+        storage: 2Gi
+        storageClassName: local-storage
+      service:
+        port: 3000
+        type: ClusterIP
+      volumeMounts:
+        - name: grafana-storage
+          mountPath: /var/lib/grafana
+      volumes:
+        - name: grafana-storage
+          persistentVolumeClaim:
+            claimName: grafana-pvc
+    
+    prometheus:
+      replicaCount: 1
+      image:
+        repository: prom/prometheus
+        tag: v2.50.0
+        pullPolicy: IfNotPresent
+      ingress:
+        enabled: true
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /
+        hosts:
+          - host: prometheus.meuteste.com
+            paths:
+              - path: /
+                pathType: Prefix
       persistentVolumeClaim:
-        claimName: prometheus-pvc
+        enabled: true
+        name: prometheus-pvc
+        accessModes:
+          - ReadWriteOnce
+        storage: 5Gi
+        storageClassName: local-storage
+      service:
+        port: 9090
+        type: ClusterIP
+      volumeMounts:
+        - name: prometheus-storage
+          mountPath: /prometheus
+      volumes:
+        - name: prometheus-storage
+          persistentVolumeClaim:
+            claimName: prometheus-pvc
