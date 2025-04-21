@@ -39,7 +39,9 @@ my-chart:
   grafana:
     replicaCount: 1    
     image:
-      tag: "10.0.3"
+      repository: grafana/loki
+      tag: "1.4.0"
+      pullPolicy: IfNotPresent
   
     adminPassword: admin  # (ou use secret)
   
@@ -66,8 +68,4 @@ my-chart:
       accessModes:
         - ReadWriteOnce
         
-  nodeSelector: {}
-   
-  tolerations: []
-   
-  affinity: {}
+ 
