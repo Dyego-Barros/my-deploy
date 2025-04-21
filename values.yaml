@@ -3,42 +3,34 @@ grafana:
   replicaCount: 1
   image: grafana/grafana
   tag: 10.2.3
-  imagePullPolicy: IfNotPresent
-  containerPort: 3000
   service:
     port: 3000
     type: ClusterIP
-  volumeMounts:
-    - name: grafana-storage
-      mountPath: /var/lib/grafana
-  volumes:
-    - name: grafana-storage
-      persistentVolumeClaim:
-        claimName: grafana-pvc
+  persistentVolumeClaim:
+    enabled: true
+    name: grafana-pvc
+    storage: 5Gi
+    storageClassName: local-storage  # Especificando sua storage class
   ingress:
     enabled: true
     hosts:
       - host: grafana.meuteste.com
         paths:
           - path: /
-            pathType: Prefix
 
 python-api:
   enabled: true
   replicaCount: 2
   image: python:3.9
   tag: latest
-  imagePullPolicy: IfNotPresent
-  containerPort: 5000
   service:
     port: 5000
     type: ClusterIP
-  volumeMounts: []
-  volumes: []
+  persistentVolumeClaim:
+    enabled: false  # API Python normalmente não precisa de armazenamento persistente
   ingress:
     enabled: true
     hosts:
       - host: python-api.meuteste.com
         paths:
           - path: /
-            pathType: Prefix
