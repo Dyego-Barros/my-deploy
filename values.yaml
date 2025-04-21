@@ -1,68 +1,62 @@
 chart-default:
-    grafana:
+  grafana:
+    enabled: true
+    replicaCount: 1
+    image:
+      repository: grafana/grafana
+      tag: 10.2.3
+      pullPolicy: IfNotPresent
+    ingress:
       enabled: true
-      replicaCount: 1
-      image:
-        repository: grafana/grafana
-        tag: 10.2.3
-        pullPolicy: IfNotPresent
-      ingress:
-        enabled: true
-        annotations:
-          nginx.ingress.kubernetes.io/rewrite-target: /
-        hosts:
-          - host: grafana.meuteste.com
-            paths:
-              - path: /
-                pathType: Prefix
-      persistentVolumeClaim:
-        enabled: false
-        name: grafana-pvc
-        accessModes:
-          - ReadWriteOnce
-        storage: 2Gi
-        storageClassName: local-storage
-      service:
-        port: 3000
-        type: ClusterIP
-      volumeMounts:
-        - name: grafana-storage
-          mountPath: /var/lib/grafana
-      volumes:
-        - name: grafana-storage
-          persistentVolumeClaim:
-            claimName: grafana-pvc
-    
-    prometheus:
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+      hosts:
+        - host: grafana.meuteste.com
+          paths:
+            - path: /
+              pathType: Prefix
+    persistentVolumeClaim:
+      enabled: false  # Desabilita a criação do PVC
+      # As opções abaixo são ignoradas quando o PVC está desabilitado
+      name: grafana-pvc
+      accessModes:
+        - ReadWriteOnce
+      storage: 2Gi
+      storageClassName: local-storage
+    service:
+      port: 3000
+      type: ClusterIP
+    # Remover volumes e volumeMounts quando o PVC estiver desabilitado
+    volumeMounts: []
+    volumes: []
+
+  prometheus:
+    enabled: true
+    replicaCount: 1
+    image:
+      repository: prom/prometheus
+      tag: v2.50.0
+      pullPolicy: IfNotPresent
+    ingress:
       enabled: true
-      replicaCount: 1
-      image:
-        repository: prom/prometheus
-        tag: v2.50.0
-        pullPolicy: IfNotPresent
-      ingress:
-        enabled: true
-        annotations:
-          nginx.ingress.kubernetes.io/rewrite-target: /
-        hosts:
-          - host: prometheus.meuteste.com
-            paths:
-              - path: /
-                pathType: Prefix
-      persistentVolumeClaim:
-        enabled: false
-        name: prometheus-pvc
-        accessModes:
-          - ReadWriteOnce
-        storage: 5Gi
-        storageClassName: local-storage
-      service:
-        port: 9090
-        type: ClusterIP
-      volumeMounts:
-        - name: prometheus-storage
-          mountPath: /prometheus
-      volumes:
-        - name: prometheus-storage
-          persistentVolumeClaim:
-            claimName: prometheus-pvc
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+      hosts:
+        - host: prometheus.meuteste.com
+          paths:
+            - path: /
+              pathType: Prefix
+    persistentVolumeClaim:
+      enabled: false  # Desabilita a criação do PVC
+      # As opções abaixo são ignoradas quando o PVC está desabilitado
+      name: prometheus-pvc
+      accessModes:
+        - ReadWriteOnce
+      storage: 5Gi
+      storageClassName: local-storage
+    service:
+      port: 9090
+      type: ClusterIP
+    # Remover volumes e volumeMounts quando o PVC estiver desabilitado
+    volumeMounts: []
+    volumes: []
