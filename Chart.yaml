@@ -4,5 +4,5 @@ version: 0.1.0
 dependencies:
   - name: my-chart
     version: 0.1.0
-    repository: http://chart.dmgsoftware.com.br/
+    repository: http://chart.dmgsoftware.com.br
  
