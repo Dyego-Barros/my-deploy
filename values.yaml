@@ -1,4 +1,5 @@
-grafana:      
+chart-default:
+  name: grafana
   image:
     repository: grafana/grafana
     tag: 10.2.3
