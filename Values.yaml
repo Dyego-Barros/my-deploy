@@ -1,4 +1,4 @@
-meu-app:
+my-chart:
   grafana:
     enabled: true
     image:
