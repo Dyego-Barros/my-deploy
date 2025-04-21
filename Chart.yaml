@@ -3,6 +3,6 @@ name: chart-default
 version: 1.16.0
 dependencies:
   - name: chart-default
-    version: 0.1.4
+    version: 0.1.5
     repository: http://chart.dmgsoftware.com.br/
  
