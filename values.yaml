@@ -1,4 +1,4 @@
-apps:
+chart-default:
   - name: grafana
     enabled: true
     replicaCount: 1
