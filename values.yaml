@@ -1,18 +1,29 @@
-chart-default:
-  name: grafana
-  image:
-    repository: grafana/grafana
-    tag: 10.2.3
-    pullPolicy: IfNotPresent
-  ingress:
+apps:
+  grafana:
     enabled: true
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-    hosts:
-      - host: grafana.meuteste.com
-        paths:
-          - path: /
-            pathType: Prefix
-
-
-   
+    replicaCount: 1
+    image: grafana/grafana
+    tag: 10.2.3
+    imagePullPolicy: IfNotPresent
+    containerPort: 3000
+    volumeMounts:
+      - name: grafana-storage
+        mountPath: /var/lib/grafana
+    volumes:
+      - name: grafana-storage
+        persistentVolumeClaim:
+          claimName: grafana-pvc
+  prometheus:
+    enabled: true
+    replicaCount: 1
+    image: prom/prometheus
+    tag: v2.50.0
+    imagePullPolicy: IfNotPresent
+    containerPort: 9090
+    volumeMounts:
+      - name: prometheus-storage
+        mountPath: /prometheus
+    volumes:
+      - name: prometheus-storage
+        persistentVolumeClaim:
+          claimName: prometheus-pvc
