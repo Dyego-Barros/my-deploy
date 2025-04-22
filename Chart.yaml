@@ -1,8 +1,8 @@
 apiVersion: v2
-name: chart-default
+name: teste-chart
 version: 1.16.0
 dependencies:
-  - name: chart-default
-    version: 1.1.7
+  - name: teste-chart
+    version: 0.1.0
     repository: http://chart.dmgsoftware.com.br/
  
