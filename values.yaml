@@ -29,7 +29,7 @@ default:
   volumes:
     - name: grafana-storage
       persistentVolumeClaim:
-        claimName: {{ include "default.fullname" . }}-pvc
+        claimName: grafana-pvc
 
   storageClass:
     create: true
