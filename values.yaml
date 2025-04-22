@@ -30,7 +30,7 @@ default:
   volumes:
     - name: grafana-storage
       persistentVolumeClaim:
-        claimName: monitoracao-default-pvc
+        claimName: grafana-default-pvc
 
   storageClass:
     create: true
