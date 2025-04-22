@@ -1,7 +1,5 @@
-nameOverride: grafana
-fullnameOverride: grafana
 
-default:
+grafana:
   replicaCount: 1
   image:
     repository: grafana/grafana  
