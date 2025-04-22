@@ -22,7 +22,29 @@ default:
              pathType: Prefix
     tls: []
  
-  
+  volumeMounts:
+   - name: grafana-storage
+     mountPath: /var/lib/grafana
+
+  volumes:
+    - name: grafana-storage
+      persistentVolumeClaim:
+        claimName: {{ include "default.fullname" . }}-pvc
+
+  storageClass:
+    create: true
+    name: local-storage
+
+  persistence:
+    enabled: true
+    size: 1Gi
+    storageClass: local-storage
+
+  persistentVolume:
+    create: true
+    path: /mnt/data/grafana  # Caminho no nó
+    node: worker1
+    
   resources:   
     limits:
       cpu: 100m
