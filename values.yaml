@@ -1,5 +1,5 @@
 
-grafana:
+default:
   replicaCount: 1
   image:
     repository: grafana/grafana  
