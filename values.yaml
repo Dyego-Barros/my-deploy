@@ -1,3 +1,6 @@
+nameOverride: grafana
+fullnameOverride: grafana
+
 default:
   replicaCount: 1
   image:
