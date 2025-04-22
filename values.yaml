@@ -60,12 +60,4 @@ default:
      maxReplicas: 100
      targetCPUUtilizationPercentage: 80
   
-  volumes: []
- 
-  volumeMounts: []
- 
-  nodeSelector: {}
-  
-  tolerations: []
-  
-  affinity: {}
+
