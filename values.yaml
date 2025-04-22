@@ -13,13 +13,10 @@ apps:
       
     autoscaling:
        enabled: false
-    persistentVolumeClaim:
-      enabled: false
-      #name: grafana-pvc
-      #storage: 5Gi
-      #storageClassName: local-storage
-      #accessModes:
-        #- ReadWriteOnce
+       minReplicas: 1
+       maxReplicas: 3
+       targetCPUUtilizationPercentage: 80
+   
         
     ingress:
       enabled: true
@@ -52,11 +49,13 @@ apps:
       port: 5000
       type: ClusterIP
       
-    autoscaling:
+     autoscaling:
        enabled: false
+       minReplicas: 1
+       maxReplicas: 3
+       targetCPUUtilizationPercentage: 80
        
-    persistentVolumeClaim:
-      enabled: false
+   
       
     ingress:
       enabled: true
